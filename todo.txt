@@ -1,0 +1,2 @@
+- tag-pro app seems to stop when not looking at browser window
+- need to store ball_data values in a list. if this gets out of hand memory wise, maybe we can use a deque (https://docs.python.org/2/library/collections.html#collections.deque) to keep constant size, or store to redis (https://redis.io/)
