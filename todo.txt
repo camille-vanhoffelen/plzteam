@@ -1,0 +1,1 @@
+- need to add multiprocessing to split fastapi vs RL stuffz on server side. CAREFUL currently we are running uvicorn as external command pointing to that main.py class. We'll need to run regular python and execute uvicorn from within (in a thread) instead. i.e import uvicorn as python library and run api there. see [this](https://www.uvicorn.org/#running-programmatically)
