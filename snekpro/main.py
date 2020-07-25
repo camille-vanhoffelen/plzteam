@@ -9,7 +9,8 @@ from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-game_states = deque()
+# keeps 1000 last game states
+game_states = deque(maxlen=1000)
 
 # TODO remove hardcoded urls
 origins = [

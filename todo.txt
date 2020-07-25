@@ -1,2 +1,0 @@
-- need to store ball_data values in a list. if this gets out of hand memory wise, maybe we can use a deque (https://docs.python.org/2/library/collections.html#collections.deque) to keep constant size, or store to redis (https://redis.io/)
-- need to send the ball_data for the two balls together, and identify the balls. this is ez with json, but have to change the way send_data is called (currently it's for each Player object). I suggest moving the send_data function to game.js and make it take the list of players whose data to send
