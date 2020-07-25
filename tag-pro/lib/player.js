@@ -1,8 +1,7 @@
-import $ from "jquery";
-
 export default class Player {
-  constructor(map, { x = 100, y = 100, radius = 20,
+  constructor(map, { player_id = 0, x = 100, y = 100, radius = 20,
                 color = 'blue', controls = 'arrows', acceleration = 0.1 } = {}) {
+    this.player_id = player_id
     this.spawnPosition = { x: x, y: y }
     this.x = x
     this.y = y
@@ -111,16 +110,6 @@ export default class Player {
     this.wallCollision()
   }
   
-  send_data() {
-    let data = {
-      'x': this.x,
-      'dx': this.dx,
-      'y': this.y,
-      'dy': this.dy
-    }
-    $.post( "http://localhost:6969/sneklisten/", JSON.stringify(data));
-  }
-
   wallCollision() {
     let thetas = [...Array(72).keys()].map(x => x * 5 * (Math.PI / 180))
     let force = 0.1

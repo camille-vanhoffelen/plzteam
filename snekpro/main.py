@@ -1,12 +1,15 @@
-from typing import Optional
+from typing import Optional, List
 from time import sleep
 import random
+from collections import deque
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 app = FastAPI()
+
+game_states = deque()
 
 # TODO remove hardcoded urls
 origins = [
@@ -24,17 +27,22 @@ app.add_middleware(
 
 ### SNEK LISTEN ###
 
-class BallState(BaseModel):
+class Player(BaseModel):
+    player_id: int
     x: float
     dx: float
     y: float
     dy: float
 
+class GameState(BaseModel):
+    players: List[Player]
+
 
 @app.post("/sneklisten/")
-async def create_ball_state(ball_state: BallState):
-    print(ball_state)
-    return ball_state
+async def create_ball_state(game_state: GameState):
+    print(game_state)
+    game_states.append(game_state)
+    return game_state
 
 ### SNEK SPEAK ###
 

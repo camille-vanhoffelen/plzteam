@@ -21,9 +21,9 @@ export default class MapBlueprint {
       rows: 10,
       blueFlagOptions: { color: 'blue', x: 75, y: 75, tsize: this.tsize },
       redFlagOptions: { color: 'red', x: 325, y: 325, tsize: this.tsize },
-      bluePlayerOptions: { x: 110, y: 110, color: 'blue',
+      bluePlayerOptions: { player_id: 0, x: 110, y: 110, color: 'blue',
                            controls: 'wasd', acceleration: 0.1 },
-      redPlayerOptions:  { x: 290, y: 290, color: 'red',
+      redPlayerOptions:  { player_id: 1, x: 290, y: 290, color: 'red',
                            controls: 'arrows', acceleration: 0.1 }
     }
 
@@ -60,8 +60,8 @@ export default class MapBlueprint {
       rows: 16,
       blueFlagOptions: { color: 'blue', x: 170, y: 320, tsize: this.tsize },
       redFlagOptions: { color: 'red', x: 830, y: 320, tsize: this.tsize },
-      bluePlayerOptions: { x: 110, y: 320, color: 'blue', controls: 'wasd' },
-      redPlayerOptions:  { x: 890, y: 320, color: 'red', controls: 'arrows' }
+      bluePlayerOptions: { player_id: 0, x: 110, y: 320, color: 'blue', controls: 'wasd' },
+      redPlayerOptions:  { player_id: 1, x: 890, y: 320, color: 'red', controls: 'arrows' }
     }
 
     this.level_three = {
@@ -97,8 +97,8 @@ export default class MapBlueprint {
       rows: 16,
       blueFlagOptions: { color: 'blue', x: 170, y: 320, tsize: this.tsize },
       redFlagOptions: { color: 'red', x: 830, y: 320, tsize: this.tsize },
-      bluePlayerOptions: { x: 110, y: 320, color: 'blue', controls: 'wasd' },
-      redPlayerOptions:  { x: 890, y: 320, color: 'red', controls: 'arrows' }
+      bluePlayerOptions: { player_id: 0, x: 110, y: 320, color: 'blue', controls: 'wasd' },
+      redPlayerOptions:  { player_id: 1, x: 890, y: 320, color: 'red', controls: 'arrows' }
     }
   }
 }

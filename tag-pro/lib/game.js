@@ -1,3 +1,4 @@
+import $ from "jquery";
 import Player from './player'
 import Flag from './flag'
 import Spike from './spike'
@@ -38,9 +39,28 @@ export default class Game {
   update(game_counter) {
     this.updateScoreboard()
     this.players.forEach(player => player.move(this.keyboard.keys))
-    this.players.forEach(player => player.send_data())
+    this.send_data(this.players)
     this.spikes.forEach(spike => spike.move(game_counter))
     this.collisionDetector.checkAllCollisions()
+  }
+
+  player_data(player) {
+    return {
+      'player_id': player.player_id,
+      'x': player.x,
+      'dx': player.dx,
+      'y': player.y,
+      'dy': player.dy
+    }
+  }
+
+  send_data(players) {
+    let players_data = players.map(this.player_data)
+    // top lvl has to be a dict
+    let data = { 
+       'players': players_data
+    }
+    $.post( "http://localhost:6969/sneklisten/", JSON.stringify(data));
   }
 
   updateScoreboard() {
