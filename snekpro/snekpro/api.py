@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+import uvicorn
 
 app = FastAPI()
 
@@ -61,3 +62,7 @@ def stream_keypresses():
 @app.get("/snekspeak")
 def snekspeak():
     return StreamingResponse(stream_keypresses(), media_type="text/event-stream")
+
+
+def run():
+    uvicorn.run("api:app", host="127.0.0.1", port=6969, log_level="info")

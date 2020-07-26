@@ -1,2 +1,2 @@
 #!/bin/bash
-pipenv run uvicorn main:app --reload --port=6969
+pipenv run python snekpro/main.py
