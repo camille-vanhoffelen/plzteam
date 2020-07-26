@@ -1,17 +1,16 @@
-from typing import Optional, List
 from time import sleep
 import random
 from collections import deque
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import uvicorn
+from dto import GameState
 
 app = FastAPI()
 
-# keeps 1000 last game states
-game_states = deque(maxlen=1000)
+game_states = None
+keypresses = None
 
 # TODO remove hardcoded urls
 origins = [
@@ -29,17 +28,6 @@ app.add_middleware(
 
 ### SNEK LISTEN ###
 
-class Player(BaseModel):
-    player_id: int
-    x: float
-    dx: float
-    y: float
-    dy: float
-
-class GameState(BaseModel):
-    players: List[Player]
-
-
 @app.post("/sneklisten/")
 async def create_ball_state(game_state: GameState):
     print(game_state)
@@ -49,20 +37,17 @@ async def create_ball_state(game_state: GameState):
 ### SNEK SPEAK ###
 
 def stream_keypresses():
-    keypresses = [37, 38, 39, 40, 65, 87, 68, 83]
     while True:
-        keypress = random.choice(keypresses)
-        keydown_string = f'event: keydown\ndata: {keypress}\n\n'
-        yield keydown_string
-        sleep(0.4)
-        keyup_string = f'event: keyup\ndata: {keypress}\n\n'
-        yield keyup_string
-
+        yield keypresses.get(True, 30)
 
 @app.get("/snekspeak")
 def snekspeak():
     return StreamingResponse(stream_keypresses(), media_type="text/event-stream")
 
 
-def run():
+def run(shared_list, shared_queue):
+    global game_states
+    game_states = shared_list
+    global keypresses
+    keypresses = shared_queue
     uvicorn.run("api:app", host="127.0.0.1", port=6969, log_level="info")
