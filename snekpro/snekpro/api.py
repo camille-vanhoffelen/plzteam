@@ -1,6 +1,3 @@
-from time import sleep
-import random
-from collections import deque
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -19,14 +16,12 @@ origins = [
 
 # this allows CORS
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, allow_origins=origins, allow_methods=["*"], allow_headers=["*"],
 )
 
 
 ### SNEK LISTEN ###
+
 
 @app.post("/sneklisten/")
 async def create_ball_state(game_state: GameState):
@@ -34,11 +29,14 @@ async def create_ball_state(game_state: GameState):
     game_states.append(game_state)
     return game_state
 
+
 ### SNEK SPEAK ###
+
 
 def stream_keypresses():
     while True:
         yield keypresses.get(True, 30)
+
 
 @app.get("/snekspeak")
 def snekspeak():
