@@ -3,11 +3,8 @@ from time import sleep
 
 keycodes = [37, 38, 39, 40, 65, 87, 68, 83]
 
-game_states = None
-keypresses = None
 
-
-def play():
+def play(game_states, keypresses):
     keypress = random.choice(keycodes)
     keydown_string = f"event: keydown\ndata: {keypress}\n\n"
     keypresses.put_nowait(keydown_string)
@@ -17,9 +14,5 @@ def play():
 
 
 def run(shared_game_states, shared_keypresses):
-    global game_states
-    game_states = shared_game_states
-    global keypresses
-    keypresses = shared_keypresses
     while True:
-        play()
+        play(shared_game_states, shared_keypresses)
