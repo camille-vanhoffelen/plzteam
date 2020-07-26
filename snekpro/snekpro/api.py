@@ -25,8 +25,8 @@ app.add_middleware(
 
 @app.post("/sneklisten/")
 async def create_ball_state(game_state: GameState):
-    print(game_state)
     game_states.append(game_state)
+    print(f'Added game state. size: {len(game_states)}')
     return game_state
 
 
@@ -43,9 +43,9 @@ def snekspeak():
     return StreamingResponse(stream_keypresses(), media_type="text/event-stream")
 
 
-def run(shared_list, shared_queue):
+def run(shared_state, shared_queue):
     global game_states
-    game_states = shared_list
+    game_states = shared_state['game_states']
     global keypresses
     keypresses = shared_queue
     uvicorn.run("api:app", host="127.0.0.1", port=6969, log_level="info")

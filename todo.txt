@@ -1,3 +1,2 @@
-- turns out can't share deque with multiprocessing: (https://stackoverflow.com/questions/48285943/python-sharing-a-deque-between-multiprocessing-processes), which means list size is currently unbounded. could replace with a Queue with auto pop earliest behaviour if needed
 - maybe we'll need to change the keypress dtos: instead of keyup and keydown, have keypress and associated duration. could be more precise, both when reading between processes (as currently it is io speed dependent), but also when sending over api.
 
