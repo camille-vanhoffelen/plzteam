@@ -3,6 +3,7 @@
 ## Usefull Links
 
 - [Multi Agent RL](https://bair.berkeley.edu/blog/2018/12/12/rllib/)
+- [Open AI 5](https://openai.com/blog/openai-five/)
 
 ## Random Thoughts
 
