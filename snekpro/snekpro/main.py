@@ -4,11 +4,24 @@ import agent
 from multiprocessing import Process, Manager, Queue
 from collections import deque
 
+from multiprocessing.managers import BaseManager
+from queue import LifoQueue
+
+# create manager that knows how to create and manage LifoQueues
+class MyManager(BaseManager):
+    pass
+
+
+MyManager.register("LifoQueue", LifoQueue)
+
 
 def main():
     print("Starting snekpro")
-    manager = Manager()
-    shared_state = manager.dict({'game_states': deque(maxlen=100)})
+    # manager = Manager()
+    manager = MyManager()
+    manager.start()
+    # shared_state = manager.dict({"game_states": deque(maxlen=100)})
+    shared_state = manager.LifoQueue(maxsize=100)
     keypresses = Queue()
 
     api_process = Process(target=api.run, args=(shared_state, keypresses))
