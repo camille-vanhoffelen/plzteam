@@ -4,10 +4,12 @@ from fastapi.responses import StreamingResponse
 import uvicorn
 from dto import GameState
 
-app = FastAPI()
-
 game_states = None
 keypresses = None
+
+MAX_GAME_STATES = 1000
+
+app = FastAPI()
 
 # TODO remove hardcoded urls
 origins = [
@@ -25,8 +27,9 @@ app.add_middleware(
 
 @app.post("/sneklisten/")
 async def create_ball_state(game_state: GameState):
+    if len(game_states) >= MAX_GAME_STATES:
+        game_states.pop(0)
     game_states.append(game_state)
-    print(f'Added game state. size: {len(game_states)}')
     return game_state
 
 
@@ -43,9 +46,9 @@ def snekspeak():
     return StreamingResponse(stream_keypresses(), media_type="text/event-stream")
 
 
-def run(shared_state, shared_queue):
+def run(shared_game_states, shared_queue):
     global game_states
-    game_states = shared_state['game_states']
+    game_states = shared_game_states
     global keypresses
     keypresses = shared_queue
     uvicorn.run("api:app", host="127.0.0.1", port=6969, log_level="info")

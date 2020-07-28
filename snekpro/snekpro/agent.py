@@ -13,7 +13,6 @@ def play(game_states, keypresses):
     keypresses.put_nowait(keyup_string)
 
 
-def run(shared_state, shared_keypresses):
-    game_states = shared_state['game_states']
+def run(shared_game_states, shared_keypresses):
     while True:
-        play(game_states, shared_keypresses)
+        play(shared_game_states, shared_keypresses)
