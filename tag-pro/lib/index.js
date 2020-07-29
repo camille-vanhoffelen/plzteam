@@ -9,6 +9,7 @@ var context = canvas.getContext('2d')
 
 const dom = new Dom()
 var game = new Game()
+var keyboard = new Keyboard().listenForEvents()
 var gameCounter = 0
 var timeLimit = 3600
 
@@ -17,6 +18,13 @@ initTotalScores()
 displayTotalScores()
 
 requestAnimationFrame(function gameLoop(){
+
+  if (keyboard.keys.reset) {
+   console.log("Reset game")
+   gameCounter = 0 
+   prepareGame("level_one")
+   keyboard.keys.reset = false
+  }
 
   if (game.running && gameCounter < timeLimit) {
     gameCounter++
@@ -84,13 +92,12 @@ function writeTotalScores(game) {
 }
 
 function prepareGame(mapLevel) {
-  var keys = new Keyboard().listenForEvents()
   var blueprint = new MapBlueprint()[mapLevel]
   var map = new Map(blueprint)
 
   canvas.setAttribute("width", `${map.cols * map.tsize}px`)
   canvas.setAttribute("height", `${map.rows * map.tsize}px`)
 
-  game = new Game(context, canvas, keys, map, blueprint)
+  game = new Game(context, canvas, keyboard, map, blueprint)
   game.init()
 }

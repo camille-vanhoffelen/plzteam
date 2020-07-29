@@ -8,7 +8,8 @@ export default class Keyboard {
       "A": false,
       "W": false,
       "D": false,
-      "S": false
+      "S": false,
+      "reset": false
     }
   }
 
@@ -17,6 +18,7 @@ export default class Keyboard {
     const evtSource = new EventSource("http://localhost:6969/snekspeak");
     evtSource.addEventListener("keydown", this.onKeyDown.bind(this))
     evtSource.addEventListener("keyup", this.onKeyUp.bind(this))
+    evtSource.addEventListener("reset", this.onReset.bind(this))
     // this is for click events, we might want it for cpu vs hooman
     // if use, need to change event.data to event.keyCode
     //window.addEventListener('keydown', this.onKeyDown.bind(this))
@@ -95,4 +97,10 @@ export default class Keyboard {
         break
     }
   }
+
+  onReset(event){
+    let that = this.keys
+    that.reset = true
+  }
+
 }

@@ -13,6 +13,14 @@ def play(game_states, keypresses):
     keypresses.put_nowait(keyup_string)
 
 
+def reset(keypresses):
+    print("Reset game")
+    reset_string = "event: reset\ndata: reset\n\n"
+    keypresses.put_nowait(reset_string)
+
+
 def run(shared_game_states, shared_keypresses):
     while True:
-        play(shared_game_states, shared_keypresses)
+        for i in range(10):
+            play(shared_game_states, shared_keypresses)
+        reset(shared_keypresses)
