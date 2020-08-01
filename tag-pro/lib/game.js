@@ -20,7 +20,6 @@ export default class Game {
 
   init() {
     let self = this
-    self.running = true
 
     self.players.push(new Player(self.map, self.blueprint.redPlayerOptions))
     self.players.push(new Player(self.map, self.blueprint.bluePlayerOptions))
@@ -35,6 +34,12 @@ export default class Game {
     }
     self.collisionDetector = new CollisionDectector(self.players, self.flags, self.spikes)
   }
+
+	start(){
+		let self = this
+		self.running = true
+	}
+
 
   update(game_counter) {
     this.updateScoreboard()

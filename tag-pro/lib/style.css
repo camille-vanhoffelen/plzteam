@@ -7,7 +7,7 @@ body {
 
 .game-canvas {
   margin: auto;
-  display: none;
+  display: block;
   padding: 10px;
 }
 
@@ -33,7 +33,7 @@ body {
 }
 
 .menu-items {
-  display:block;
+  display: none;
   margin: auto;
 }
 

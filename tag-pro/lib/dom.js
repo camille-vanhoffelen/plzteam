@@ -8,7 +8,7 @@ export default class Dom {
   }
 
   showMenu() {
-    document.querySelector('div.start-menu').style.display = 'block'
+    this.menu.style.display = 'block'
     document.querySelectorAll('button.start-button').forEach(
       button => button.style.display = 'block')
     document.getElementById('total-score-container').style.display = 'flex'
@@ -16,6 +16,10 @@ export default class Dom {
 
   get scoreBoard() {
     return document.getElementById('score-board-container')
+  }
+
+  get menu() {
+    return document.querySelector('div.start-menu')
   }
 
   level(event) {
@@ -29,6 +33,11 @@ export default class Dom {
   hide(element) {
     element.style.display = 'none'
   }
+
+	hideMenu() {
+		this.menu.style.display = 'none'
+
+	}
 
   hideScoreboard() {
     this.scoreBoard.style.visibility = 'hidden'

@@ -7,13 +7,14 @@ import Dom from './dom'
 var canvas = document.getElementById('game')
 var context = canvas.getContext('2d')
 
+var mapLevel = "level_one"
 const dom = new Dom()
 var game = new Game()
 var keyboard = new Keyboard().listenForEvents()
 var gameCounter = 0
 var timeLimit = 3600
 
-setStage()
+setStage(mapLevel)
 initTotalScores()
 displayTotalScores()
 
@@ -21,9 +22,10 @@ requestAnimationFrame(function gameLoop(){
 
   if (keyboard.keys.reset) {
    console.log("Reset game")
+   prepareGame(mapLevel)
    gameCounter = 0 
-   prepareGame("level_one")
    keyboard.keys.reset = false
+   game.start()
   }
 
   if (game.running && gameCounter < timeLimit) {
@@ -35,9 +37,6 @@ requestAnimationFrame(function gameLoop(){
     gameCounter++
     writeTotalScores(game)
     displayTotalScores()
-  } else {
-    dom.showMenu()
-    dom.hideGame()
   }
   requestAnimationFrame(gameLoop)
 })
@@ -56,16 +55,11 @@ function renderTimeBar() {
   timeContext.fillRect(0, 0, timeCanvas.width * (1 - gameCounter / timeLimit), timeCanvas.height)
 }
 
-function setStage() {
-  console.log("Setting stage")
-  Array.from(dom.buttons).forEach(button => {
-    dom.listenOn(button, 'click', event => {
-      gameCounter = 0
-      dom.hide(event.currentTarget.parentNode)
-      dom.showGame()
-      prepareGame(dom.level(event), dom.canvas)
-    })
-  })
+function setStage(level) {
+	console.log("Setting stage, level: " + level)
+	dom.hideMenu()
+	dom.showGame(level)
+	prepareGame(level, dom.canvas)
 }
 
 function displayTotalScores() {
