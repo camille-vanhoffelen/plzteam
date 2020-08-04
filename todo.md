@@ -4,6 +4,8 @@
 
 - [Multi Agent RL](https://bair.berkeley.edu/blog/2018/12/12/rllib/)
 - [Open AI 5](https://openai.com/blog/openai-five/)
+- [reward](https://www.researchgate.net/post/What_is_the_best_Reward_function_in_Reinforcement_Learning)
+- [optimization functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization)
 
 ## Random Thoughts
 
