@@ -23,15 +23,14 @@ def main():
 
     TIME_COEF = 0.01
 
-    # Make data.
     X = np.arange(0, MAX_DISTANCE + 1, 1)
     Y = np.arange(0, TIMER + 1, 1)
     X, Y = np.meshgrid(X, Y)
 
-    attacker_reward = (MAX_DISTANCE - X) * 0.1 * Y
-    attacker_reward = normalize_neg(attacker_reward)
+    attacker_reward = MAX_DISTANCE - X
+    attacker_reward = normalize(attacker_reward)
 
-    defender_reward = X
+    defender_reward = normalize(TIMER - Y)
 
     plot_attacker(fig, X, Y, attacker_reward)
     plot_defender(fig, X, Y, defender_reward)
