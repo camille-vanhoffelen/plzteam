@@ -1,8 +1,8 @@
 from enum import Enum
-import math
 
 import gym
 import numpy as np
+from scipy.spatial import distance
 
 from ray.rllib.env.external_multi_agent_env import ExternalMultiAgentEnv
 
@@ -15,28 +15,21 @@ class KeyPress(Enum):
     DOWN = 4
 
 
-def euclidian_distance(x, y):
-    distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
-    return distance
-
-
-class TagProEnv(ExternalMultiAgentEnv):
+class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
     """This is the multi-agent version of ExternalEnv."""
 
     _REWARD_COEF = 0.1
 
     def __init__(self,):
-        """Initialize a multi-agent external env.
-        ExternalMultiAgentEnv subclasses must call this during their __init__.
-        Args:
-            action_space (gym.Space): Action space of the env.
-            observation_space (gym.Space): Observation space of the env.
-            max_concurrent (int): Max number of active episodes to allow at
-                once. Exceeding this limit raises an error.
+        """Initialize The TagProMultAgenEnv
+       
         """
 
-        self._defender = "defender"
-        self._attacker = "attacker"
+        self._defender = self._defender
+        self._attacker = self._attacker
+
+        self._max_time = None
+        self._max_distance = None
 
         # [x, y]
         position_space = gym.spaces.Box(
@@ -59,12 +52,15 @@ class TagProEnv(ExternalMultiAgentEnv):
         )
 
         self._observation_space = gym.spaces.Dict(
-            {"defender": ball_observation_space, "attacker": ball_observation_space}
+            {
+                self._defender: ball_observation_space,
+                self._attacker: ball_observation_space,
+            }
         )
 
         key_space = gym.spaces.Discrete(5)
         self._action_space = gym.spaces.Dict(
-            {"defender": key_space, "attacker": key_space}
+            {self._defender: key_space, self._attacker: key_space}
         )
 
         super().__init__(self._action_space, self._observation_space)
@@ -82,7 +78,7 @@ class TagProEnv(ExternalMultiAgentEnv):
         Multiple episodes may be started at the same time.
         """
         eid = self.start_episode()
-        obs, self._max_distance = self._reset()
+        obs, self._max_distance, self._max_time = self._reset()
         while True:
             action = self.get_action(eid, obs)
 
@@ -97,34 +93,46 @@ class TagProEnv(ExternalMultiAgentEnv):
                 eid = self.start_episode()
 
     def _reset(self):
-        #
-        return 1, 1
+        # Ask Api to reset the game
+
+        # Get the initial obs, max_distande and max_time
+        obs = None
+        max_distance = None
+        max_time = None
+
+        return obs, max_distance, max_time
 
     def _execute_action(self, action):
-        attacker_action = action["attacker"]
-        defender_action = action["defender"]
+        attacker_action = action[self._attacker]
+        defender_action = action[self._defender]
 
-        return obs, reward, done, info
+        # Send Action to API
 
-    def _compute_reward(self, obs, done):
-        attacker_obs = obs["attacker"]
-        defender_obs = obs["defender"]
+        # Wait For API to return obs from action
+        obs = None
+        done = None
+        time_left = None
 
-        attacker_pos = attacker_obs["position"]
-        defender_pos = defender_obs["positon"]
+        reward = self._compute_reward(obs, time_left, done)
 
-        x_vector = [attacker_pos[0], defender_pos[0]]
-        y_vector = [attacker_pos[1], defender_pos[1]]
-        ball_distance = euclidian_distance(x_vector, y_vector)
+        return obs, reward, done
+
+    def _compute_reward(self, obs, time_left, done):
+        ball_distance = distance.euclidean(
+            obs[self._attacker]["position"], obs[self._defender]["position"]
+        )
 
         attacker_reward = self._compute_attacker_reward(ball_distance)
-        pass
+        defender_reward = self._compute_defender_reward(time_left)
 
-    def _compute_attacker_reward(self, ball_distance, time_left):
-        reward = (self._max_distance - ball_distance) * time_left
+        reward = {self._attacker: attacker_reward, self._defender: defender_reward}
+
         return reward
 
-    def _compute_defender_reward(self, ball_distance, time_left):
-        reward = ball_distance
+    def _compute_attacker_reward(self, ball_distance):
+        reward = self._max_distance - ball_distance
         return reward
 
+    def _compute_defender_reward(self, time_left):
+        reward = self._max_time - time_left
+        return reward
