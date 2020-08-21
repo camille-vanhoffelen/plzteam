@@ -12,3 +12,5 @@ class Player(BaseModel):
 
 class GameState(BaseModel):
     players: List[Player]
+    initial: bool
+    game_id: str

@@ -5,7 +5,8 @@ import Spike from './spike'
 import CollisionDectector from './collision-detector'
 
 export default class Game {
-  constructor(context, canvas, keyboard, map, blueprint) {
+  constructor(gameID, context, canvas, keyboard, map, blueprint) {
+    this.gameID = gameID
     this.canvas = canvas
     this.context = context
     this.keyboard = keyboard
@@ -16,6 +17,7 @@ export default class Game {
     this.spikes = []
     this.collisionDetector = {}     
     this.running = false
+    this.initial = true
   }
 
   init() {
@@ -35,16 +37,15 @@ export default class Game {
     self.collisionDetector = new CollisionDectector(self.players, self.flags, self.spikes)
   }
 
-	start(){
-		let self = this
-		self.running = true
-	}
-
+  start() {
+    let self = this
+    self.running = true
+  }
 
   update(game_counter) {
     this.updateScoreboard()
     this.players.forEach(player => player.move(this.keyboard.keys))
-    this.send_data(this.players)
+    this.send_data()
     this.spikes.forEach(spike => spike.move(game_counter))
     this.collisionDetector.checkAllCollisions()
   }
@@ -59,10 +60,11 @@ export default class Game {
     }
   }
 
-  send_data(players) {
-    let players_data = players.map(this.player_data)
-    // top lvl has to be a dict
+  send_data() {
+    let players_data = this.players.map(this.player_data)
     let data = { 
+       'game_id' : this.gameID,
+       'initial' : this.initial,
        'players': players_data
     }
     $.post( "http://localhost:6969/sneklisten/", JSON.stringify(data));

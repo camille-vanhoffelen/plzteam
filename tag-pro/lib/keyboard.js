@@ -11,6 +11,7 @@ export default class Keyboard {
       "S": false,
       "reset": false
     }
+    this.metadata = {}
   }
 
   listenForEvents() {
@@ -101,6 +102,8 @@ export default class Keyboard {
   onReset(event){
     let that = this.keys
     that.reset = true
+    let dataJSON = JSON.parse(event.data)
+    this.metadata["gameID"] = dataJSON.game_id
   }
 
 }

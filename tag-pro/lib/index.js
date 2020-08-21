@@ -9,35 +9,42 @@ var context = canvas.getContext('2d')
 
 var mapLevel = "level_one"
 const dom = new Dom()
-var game = new Game()
+var game = null
 var keyboard = new Keyboard().listenForEvents()
 var gameCounter = 0
 var timeLimit = 3600
 
-setStage(mapLevel)
-initTotalScores()
-displayTotalScores()
 
 requestAnimationFrame(function gameLoop(){
 
   if (keyboard.keys.reset) {
    console.log("Reset game")
-   prepareGame(mapLevel)
-   gameCounter = 0 
    keyboard.keys.reset = false
+   let gameID = keyboard.metadata.gameID
+   setStage(mapLevel)
+   initTotalScores()
+   displayTotalScores()
+   game = prepareGame(gameID, mapLevel)
+   gameCounter = 1 
    game.start()
+   renderTimeBar()
+   game.update(gameCounter)
+   game.draw()
+   game.initial = false
   }
 
-  if (game.running && gameCounter < timeLimit) {
+  if (game && game.running && gameCounter < timeLimit) {
     gameCounter++
     renderTimeBar()
     game.update(gameCounter)
     game.draw()
+
   } else if (gameCounter === timeLimit) {
     gameCounter++
     writeTotalScores(game)
     displayTotalScores()
   }
+
   requestAnimationFrame(gameLoop)
 })
 
@@ -59,7 +66,8 @@ function setStage(level) {
 	console.log("Setting stage, level: " + level)
 	dom.hideMenu()
 	dom.showGame(level)
-	prepareGame(level, dom.canvas)
+	// TODO remove this? don't need if always reset to start
+	// prepareGame(level, dom.canvas)
 }
 
 function displayTotalScores() {
@@ -85,13 +93,14 @@ function writeTotalScores(game) {
   }
 }
 
-function prepareGame(mapLevel) {
+function prepareGame(gameID, mapLevel) {
   var blueprint = new MapBlueprint()[mapLevel]
   var map = new Map(blueprint)
 
   canvas.setAttribute("width", `${map.cols * map.tsize}px`)
   canvas.setAttribute("height", `${map.rows * map.tsize}px`)
 
-  game = new Game(context, canvas, keyboard, map, blueprint)
+  var game = new Game(gameID, context, canvas, keyboard, map, blueprint)
   game.init()
+  return game
 }
