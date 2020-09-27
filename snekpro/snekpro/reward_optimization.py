@@ -1,3 +1,5 @@
+import math
+
 # This import registers the 3D projection, but is otherwise unused.
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 
@@ -72,5 +74,20 @@ def plot_defender(fig, X, Y, reward):
     fig.colorbar(surf, shrink=0.5, aspect=5)
 
 
+def euclidian_distance(x_vector: np.Array, y_vector: np.Array):
+    """ Computes the euclidian distance between two points
+
+    Args:
+        x_vector (np.Array): array of the 
+        y_vector (np.Array): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    distance = math.sqrt(sum([(x - y) ** 2 for x, y in zip(x_vector, y_vector)]))
+    return distance
+
+
 if __name__ == "__main__":
-    main()
+    u = np.array([0, 0])
+    v = np.array([])

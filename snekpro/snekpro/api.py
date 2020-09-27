@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import uvicorn
-from dto import GameState
+
+from snekpro.dto import GameState
 
 game_states = None
 keypresses = None
@@ -51,4 +52,4 @@ def run(shared_game_states, shared_queue):
     game_states = shared_game_states
     global keypresses
     keypresses = shared_queue
-    uvicorn.run("api:app", host="127.0.0.1", port=6969, log_level="info")
+    uvicorn.run("snekpro.api:app", host="127.0.0.1", port=6969, log_level="error")
