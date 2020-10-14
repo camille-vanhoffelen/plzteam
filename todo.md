@@ -14,11 +14,7 @@
 - I think a game with a square map, no flag, and a game of tag, one ball has to hit the other ball before time runs out. that is a very good game for RL.
 - if the fixed size game states list becomes too slow, [here](https://docs.python.org/2/library/multiprocessing.html#examples) is how we can implement shared deque.
 - reset button works now, but mapLevel is hardcoded. I will take that out of the event listener next, and put in as CLI argument for node. (CANT HAVE CLI ARGUMENT)
-- instead of node CLI arguments, add mapLevel to reset event on snekspeak side
+- instead of node CLI arguments, add mapLevel to reset event on snekspeak side, so CLI is in python
 - need to make sure agent can guarantee that observations were taken _after_ the latest action was taken. Can do that with action ids, and GameState keeps "latest action taken" variable with id.
-- need "done state" and "win state" "timeout state" to be send from js to python
 - two game modes - "RL training" and "player", where "RL training" has no menu and starts straight into game, and where "player" has menu and the already trained RL agent is used as AI. 
 - bound observations based on map? (e.g x y can't be more or less than map boundaries
-- what happens on timeout? does the game wait for agent to reset, or auto-resets?
-
-

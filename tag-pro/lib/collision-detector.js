@@ -3,7 +3,7 @@ import FlagCollisions from './flag-collisions'
 import SpikeCollisions from './spike-collisions'
 
 export default class CollisionDectector {
-  constructor(players, flags, spikes) {
+  constructor(players, flags, spikes, game) {
     this.ballCollisions = new BallCollisions(players, flags)
     this.flagCollisions = new FlagCollisions(players, flags)
     this.spikeCollisions = new SpikeCollisions(players, flags, spikes)
