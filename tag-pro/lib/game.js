@@ -19,6 +19,7 @@ export default class Game {
         this.spikes = []
         this.collisionDetector = {}
         this.timeLimit = timeLimit
+        this.timer = timeLimit
         this.running = false
         this.isInitial = true
         this.isFinal = false
@@ -48,14 +49,15 @@ export default class Game {
         self.running = true
     }
 
-    update(game_counter) {
-        if (game_counter === this.timeLimit) {
+    update(gameCounter) {
+        this.timer = this.timeLimit - gameCounter
+        if (this.timer === 0) {
             this.timeOut()
         } else {
             this.updateScoreboard()
             this.attacker.move(this.keyboard.keys)
             this.defender.move(this.keyboard.keys)
-            this.spikes.forEach(spike => spike.move(game_counter))
+            this.spikes.forEach(spike => spike.move(gameCounter))
             this.collisionDetector.checkAllCollisions()
             if (this.collisionDetector.ballCollisions.collided) {
                 this.collision()
@@ -66,6 +68,7 @@ export default class Game {
     timeOut() {
         this.isFinal = true
         this.winner = this.defender.player_id
+        this.timer = 0
     }
 
     collision() {
@@ -91,7 +94,8 @@ export default class Game {
             'final': this.isFinal,
             'attacker': this.player_data(this.attacker),
             'defender': this.player_data(this.defender),
-            'winner': this.winner
+            'winner': this.winner,
+            'timer' : this.timer
         }
         console.log(data)
         $.post("http://localhost:6969/sneklisten/", JSON.stringify(data));

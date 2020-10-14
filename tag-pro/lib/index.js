@@ -25,7 +25,7 @@ requestAnimationFrame(function gameLoop() {
         setStage(mapLevel)
         initTotalScores()
         game = prepareGame(gameID, mapLevel)
-        gameCounter = 1
+        gameCounter = 0
         game.start()
         renderTimeBar()
         game.sendData()

@@ -17,3 +17,4 @@ class GameState(BaseModel):
     initial: bool
     final: bool
     winner: Optional[int]
+    timer: int
