@@ -1,5 +1,7 @@
-from typing import List
+
 from pydantic import BaseModel
+from typing import List, Optional
+
 
 
 class Player(BaseModel):
@@ -11,6 +13,10 @@ class Player(BaseModel):
 
 
 class GameState(BaseModel):
-    players: List[Player]
-    initial: bool
     game_id: str
+    attacker: Player
+    defender: Player
+    initial: bool
+    final: bool
+    winner: Optional[int]
+    timer: int

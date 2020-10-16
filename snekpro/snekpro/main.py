@@ -5,6 +5,15 @@ import agent
 
 
 def main():
+    """main.
+
+    Snek side process manager.
+    Runs the api process, including sneklisten and snekspeak endpoints.
+    Runs the agent process, which decides on actions based on game states.
+    These two processes communicate through:
+    * a game_states list, continuously updated with latest game states from tagpro server
+    * a keypresses queue, consumed by snekspeak and forwarded to tagpro server
+    """
     print("Starting snekpro")
     manager = Manager()
     game_states = manager.list()
@@ -19,6 +28,7 @@ def main():
     agent_process.start()
 
     try:
+        # current shutoff after 60s
         time.sleep(60)
 
     except KeyboardInterrupt:

@@ -28,6 +28,7 @@ app.add_middleware(
 
 @app.post("/sneklisten/")
 async def create_ball_state(game_state: GameState):
+    # fake deque implementation
     if len(game_states) >= MAX_GAME_STATES:
         game_states.pop(0)
     game_states.append(game_state)
