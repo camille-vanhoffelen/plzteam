@@ -1,7 +1,7 @@
+from multiprocessing import Process, Manager, Queue
 import time
 import api
 import agent
-from multiprocessing import Process, Manager, Queue
 
 
 def main():

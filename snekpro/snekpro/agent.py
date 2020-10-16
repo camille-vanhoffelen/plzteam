@@ -79,6 +79,7 @@ def run(shared_game_states, shared_keypresses):
         # this is a pretend agent that resets game then plays 10 moves then resets again.
         initial_state = reset(shared_game_states, shared_keypresses)
         print(f"Initial state: {initial_state}")
+
         for i in range(30):
             play(shared_game_states, shared_keypresses)
 
