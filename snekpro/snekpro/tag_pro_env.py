@@ -24,12 +24,11 @@ class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
 
     _REWARD_COEF = 0.1
 
-    def __init__(self, game_states, keypresses):
-        """Initialize The TagProMultAgenEnv
-       
-        """
-        self._game_states = game_states
-        self._keypresses = keypresses
+    def __init__(self, config):
+        """Initialize The TagProMultAgenEnv"""
+        print("INIT TAG PRO ENV")
+        self._game_states = config["game_states"]
+        self._keypresses = config["keypresses"]
 
         self._attacker = "attacker"
         self._defender = "defender"
@@ -102,18 +101,22 @@ class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
         """
         eid = self.start_episode()
         obs, self._max_distance, self._max_time = self._reset()
-        self._timer = time.time()
+        # self._timer = time.time()
         while True:
             action = self.get_action(eid, obs)
 
             obs, reward, done = self._execute_action(action)
-            pprint(reward)
+            # pprint(reward)
+            self.log_returns(
+                eid,
+                reward,
+            )
 
             if done:
                 self.end_episode(eid, obs)
                 obs, self._max_distance, self._max_time = self._reset()
                 eid = self.start_episode()
-                self._timer = time.time()
+                # self._timer = time.time()
 
     def _reset(self):
         # Ask Api to reset the game
@@ -122,8 +125,8 @@ class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
         obs = self._convert_gamestate_to_obs(game_state)
 
         # TODO: ASK CAM FOR VALUES
-        max_distance = 250
-        max_time = 10
+        max_distance = 350
+        max_time = 500
 
         return obs, max_distance, max_time
 
@@ -145,20 +148,15 @@ class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
         game_state = self._game_states[-1]
         obs = self._convert_gamestate_to_obs(game_state)
 
-        # TODO: Implement Done and Time left
-        current_time = time.time()
-        if current_time > self._timer + self._max_time:
-            done = True
-            time_left = 0
-        else:
-            done = False
-            time_left = (self._timer + self._max_time) - current_time
+        done = game_state.final
+        time_left = game_state.timer
+        winner = game_state.winner
 
-        reward = self._compute_reward(obs, time_left, done)
+        reward = self._compute_reward(obs, time_left, winner)
 
         return obs, reward, done
 
-    def _compute_reward(self, obs, time_left, done):
+    def _compute_reward(self, obs, time_left, winner):
         ball_distance = distance.euclidean(
             obs[self._attacker]["position"], obs[self._defender]["position"]
         )
@@ -182,8 +180,8 @@ class TagProExtMultiAgenEnv(ExternalMultiAgentEnv):
         return (reward - min_value) / (max_value - min_value)
 
     def _convert_gamestate_to_obs(self, game_state):
-        attacker_player = game_state.players[0]
-        defender_player = game_state.players[1]
+        attacker_player = game_state.attacker
+        defender_player = game_state.defender
 
         attacker_ball_obs_space = self._convert_player_to_ball_obs(attacker_player)
         defender_ball_obs_space = self._convert_player_to_ball_obs(defender_player)

@@ -21,3 +21,7 @@
 - two game modes - "RL training" and "player", where "RL training" has no menu and starts straight into game, and where "player" has menu and the already trained RL agent is used as AI. 
 - bound observations based on map? (e.g x y can't be more or less than map boundaries
 
+
+
+
+-- need to add server and client https://github.com/ray-project/ray/blob/master/rllib/examples/serving/cartpole_client.py
