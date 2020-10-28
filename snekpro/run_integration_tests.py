@@ -11,7 +11,12 @@ def main():
     game_states = manager.list()
     keypresses = Queue()
 
-    mock_tag_pro_env = MockTagProExtMutliAgentEnv(game_states, keypresses)
+    mock_tag_pro_env = MockTagProExtMutliAgentEnv(
+        {
+            "game_states": game_states,
+            "keypresses": keypresses,
+        }
+    )
 
     api_process = Process(target=api.run, args=(game_states, keypresses))
     env_process = Process(target=mock_tag_pro_env.run)

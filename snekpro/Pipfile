@@ -11,12 +11,9 @@ pylint = "*"
 fastapi = "*"
 uvicorn = "*"
 torch = "*"
-torchvision = "*"
 tensorflow = "*"
 ray = {extras = ["rllib"],version = "*"}
-atari-py = "*"
 numpy = "*"
-matplotib = "*"
 matplotlib = "*"
 
 [requires]

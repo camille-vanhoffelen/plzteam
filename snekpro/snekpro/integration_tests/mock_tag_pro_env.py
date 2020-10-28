@@ -5,7 +5,7 @@ from snekpro.tag_pro_env import TagProExtMultiAgenEnv, AgentAction
 
 
 class MockTagProExtMutliAgentEnv(TagProExtMultiAgenEnv):
-    """ This class mocks the TagProExtMultiAgentEnv by mocking all the ExternalMultiAgentEnv
+    """This class mocks the TagProExtMultiAgentEnv by mocking all the ExternalMultiAgentEnv
     methods normally made by the rllib package.
 
     This class can be used to test the integration with the tagpro api and engine,
