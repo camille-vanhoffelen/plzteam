@@ -20,8 +20,6 @@
 - need to make sure agent can guarantee that observations were taken _after_ the latest action was taken. Can do that with action ids, and GameState keeps "latest action taken" variable with id.
 - two game modes - "RL training" and "player", where "RL training" has no menu and starts straight into game, and where "player" has menu and the already trained RL agent is used as AI. 
 - bound observations based on map? (e.g x y can't be more or less than map boundaries
-
-
-
-
--- need to add server and client https://github.com/ray-project/ray/blob/master/rllib/examples/serving/cartpole_client.py
+- need to add server and client https://github.com/ray-project/ray/blob/master/rllib/examples/serving/cartpole_client.py
+- needed to install bazel, so I could install dm-tree, to resolved this issue: https://github.com/ray-project/ray/issues/7645 . Check when this is all fixed, so can remove bazel requirement
+- jeez this ray project is a mess: https://github.com/ray-project/ray/issues/7770 remember to remove pandas dependency when this is fixed

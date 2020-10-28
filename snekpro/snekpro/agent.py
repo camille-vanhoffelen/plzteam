@@ -1,7 +1,7 @@
 import random
 import time
 import uuid
-from dto import GameState
+from snekpro.dto import GameState
 
 keycodes = [37, 38, 39, 40, 65, 87, 68, 83]
 
@@ -79,9 +79,12 @@ def run(shared_game_states, shared_keypresses):
         # this is a pretend agent that resets game then plays 10 moves then resets again.
         initial_state = reset(shared_game_states, shared_keypresses)
         print(f"Initial state: {initial_state}")
-
         for i in range(30):
             play(shared_game_states, shared_keypresses)
+            current_game_state = shared_game_states[-1]
+            if current_game_state.final:
+                print(f"Final game state: {current_game_state}")
+                break
 
 
 def safe_pop_first(game_states):

@@ -1,7 +1,7 @@
 from multiprocessing import Process, Manager, Queue
 import time
-import api
-import agent
+import snekpro.api
+import snekpro.agent
 
 
 def main():
@@ -19,8 +19,8 @@ def main():
     game_states = manager.list()
     keypresses = Queue()
 
-    api_process = Process(target=api.run, args=(game_states, keypresses))
-    agent_process = Process(target=agent.run, args=(game_states, keypresses))
+    api_process = Process(target=snekpro.api.run, args=(game_states, keypresses))
+    agent_process = Process(target=snekpro.agent.run, args=(game_states, keypresses))
 
     print("Starting API")
     api_process.start()

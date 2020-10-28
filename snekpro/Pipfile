@@ -16,8 +16,11 @@ tensorflow = "*"
 ray = {extras = ["rllib"],version = "*"}
 atari-py = "*"
 numpy = "*"
-matplotib = "*"
 matplotlib = "*"
+snekpro = {editable = true, path = "."}
+gym = "*"
+dm-tree = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.8"
